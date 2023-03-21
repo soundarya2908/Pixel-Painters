@@ -27,7 +27,7 @@ https://youtu.be/F0XVOL1zQHM
 Team member Names:
 
 1. *Jackson Schilling*
-2. *TODO my name is...*
+2. *Divya Jangid*
 3. *TODO my name is...*
 
 # Team spread sheet 

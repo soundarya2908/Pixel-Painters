@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"Jackson Schilling"
+	],
+	"copyright": "Copyright © 2023, Jackson Schilling",
+	"dependencies": {
+		"bindbc-sdl": "~>1.2.4"
+	},
+	"description": "A minimal D application.",
+	"license": "proprietary",
+	"name": "finalproject"
+}

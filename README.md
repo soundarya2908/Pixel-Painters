@@ -28,7 +28,7 @@ Team member Names:
 
 1. *Jackson Schilling*
 2. *Divya Jangid*
-3. *TODO my name is...*
+3. *Soundarya Srikanta*
 
 # Team spread sheet 
 

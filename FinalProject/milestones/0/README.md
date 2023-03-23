@@ -15,24 +15,43 @@ The first stage we learned in the software development life cycle is planning.
 
 *I recommend you use a markdown table or list to stay organized, add or remove as many entries as you need.*
 
+## Milestone Timeline
+- Date: 23rd March
+	- Milestone 0
+- Date: 24th March
+	- Milestone 1
+- Date: 24th March
+	- Milestone 2
+- Date: 
+	- Milestone 3
 
-## Timeline
 
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
-- Date:
-	- Task/Milestone to be completed
+
+## Project Implementation Timeline
+
+- Date: 23rd March
+	- Go through Statement of work and creating the User Stories
+- Date: 24th March
+	- Assignment Integration
+- Date: 25th March
+	- Setting up the Project
+- Date: 26th March
+	- Design UI
+- Date: 28th March
+	- POC on paint application
+- Date: 29th March
+	- POC on client server implementation
+- Date: 30th March
+	- Look into the data structure and other architectural aspects of the porject (Informative)
+- Date: 31st March
+	- Achieve Milestone 1
+- Date: 1st April
+	- Preparing the Testcases
+- Date: 5th April
+	- Real time paint application up and running
+- Date: 12th April
+	- Complete the feature implementation (Different brushes, networked chat, eraser)
+- Date: 17th April
+	- Final testing, code documentation and final checks
+	
+

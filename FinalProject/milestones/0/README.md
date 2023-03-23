@@ -22,10 +22,22 @@ The first stage we learned in the software development life cycle is planning.
 	- Milestone 1
 - Date: 24th March
 	- Milestone 2
-- Date: 
+- Date: 29th March
 	- Milestone 3
-
-
+- Date: 31st March
+	- Milestone 4
+- Date: 12th April
+	- Milestone 5
+- Date: 14th April
+	- Milestone 6
+- Date: 14th April
+	- Milestone 7
+- Date: 14th April
+	- Milestone 8
+- Date: 16th April
+	- Milestone 9
+- Date: 17th April
+	- Milestone 10
 
 ## Project Implementation Timeline
 

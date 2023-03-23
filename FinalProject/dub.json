@@ -1,12 +1,14 @@
 {
 	"authors": [
-		"Jackson Schilling"
+		"Jackson Schilling",
+		"Divya Jangid",
+		"Soundarya Srikanta"
 	],
-	"copyright": "Copyright © 2023, Jackson Schilling",
+	"copyright": "Copyright © 2023, Jackson Schilling, Divya Jangid, Soundarya Srikanta",
 	"dependencies": {
 		"bindbc-sdl": "~>1.2.4"
 	},
-	"description": "A minimal D application.",
+	"description": "An application that allows users to paint on a canvas together",
 	"license": "proprietary",
 	"name": "finalproject"
 }

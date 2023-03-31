@@ -7,6 +7,7 @@ import bindbc.sdl;
 import loader = bindbc.loader.sharedlib;
 
 import Surface : Surface;
+import Surface : Color;
 
 class SDLApp {
 
@@ -92,7 +93,7 @@ class SDLApp {
                     int brushSize=4;
                     for(int w=-brushSize; w < brushSize; w++){
                         for(int h=-brushSize; h < brushSize; h++){
-                            imgSurface.UpdateSurfacePixel(xPos+w,yPos+h);
+                            imgSurface.UpdateSurfacePixel(xPos+w,yPos+h, new Color(255,132,10));
                         }
                     }
                 }

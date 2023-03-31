@@ -4,6 +4,12 @@ import loader = bindbc.loader.sharedlib;
 
 import std.stdio;
 
+struct Color {
+    ubyte r;
+    ubyte g;
+    ubyte b;
+}
+
 class Surface {
     SDL_Surface* imgSurface;
     SDL_Window* window;
@@ -26,7 +32,7 @@ class Surface {
     }
 
     /// Function for updating the pixels in a surface to a 'blue-ish' color.
-    void UpdateSurfacePixel(int xPos, int yPos){
+    void UpdateSurfacePixel(int xPos, int yPos, Color* color){
         // When we modify pixels, we need to lock the surface first
         SDL_LockSurface(imgSurface);
         // Make sure to unlock the surface when we are done.
@@ -35,11 +41,11 @@ class Surface {
         // Retrieve the pixel arraay that we want to modify
         ubyte* pixelArray = cast(ubyte*)imgSurface.pixels;
         // Change the 'blue' component of the pixels
-        pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+0] = 255;
+        pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+0] = color.b;
         // Change the 'green' component of the pixels
-        pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+1] = 128;
+        pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+1] = color.g;
         // Change the 'red' component of the pixels
-        pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+2] = 32;
+        pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+2] = color.r;
     }
 
     int GetRed(int xPos, int yPos) {

@@ -58,7 +58,7 @@ class SDLApp {
     }
 
     void MainApplicationLoop() {
-        Surface imgSurface = new Surface();
+        Surface mySurface = new Surface();
 
         // Flag for determing if we are running the main application loop
         bool runApplication = true;
@@ -93,14 +93,13 @@ class SDLApp {
                     int brushSize=4;
                     for(int w=-brushSize; w < brushSize; w++){
                         for(int h=-brushSize; h < brushSize; h++){
-                            imgSurface.UpdateSurfacePixel(xPos+w,yPos+h, new Color(255,132,10));
+                            mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
                         }
                     }
                 }
             }
-            imgSurface.BlitSurface();
+            mySurface.BlitSurface();
         }
-
-        imgSurface.DestroyWindow();
+        mySurface.DestroyWindow();
     }
 }

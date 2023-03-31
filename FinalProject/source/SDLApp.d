@@ -90,7 +90,7 @@ class SDLApp {
                     // Loop through and update specific pixels
                     // NOTE: No bounds checking performed --
                     //       think about how you might fix this :)
-                    int brushSize=4;
+                    int brushSize=mySurface.GetBrushSize();
                     for(int w=-brushSize; w < brushSize; w++){
                         for(int h=-brushSize; h < brushSize; h++){
                             mySurface.UpdateSurfacePixel(xPos+w,yPos+h);

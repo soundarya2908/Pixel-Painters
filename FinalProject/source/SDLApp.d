@@ -7,6 +7,7 @@ import bindbc.sdl;
 import loader = bindbc.loader.sharedlib;
 
 import Surface : Surface;
+import Surface : Color;
 
 class SDLApp {
 
@@ -57,7 +58,7 @@ class SDLApp {
     }
 
     void MainApplicationLoop() {
-        Surface imgSurface = new Surface();
+        Surface mySurface = new Surface();
 
         // Flag for determing if we are running the main application loop
         bool runApplication = true;
@@ -89,17 +90,16 @@ class SDLApp {
                     // Loop through and update specific pixels
                     // NOTE: No bounds checking performed --
                     //       think about how you might fix this :)
-                    int brushSize=4;
+                    int brushSize=mySurface.GetBrushSize();
                     for(int w=-brushSize; w < brushSize; w++){
                         for(int h=-brushSize; h < brushSize; h++){
-                            imgSurface.UpdateSurfacePixel(xPos+w,yPos+h);
+                            mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
                         }
                     }
                 }
             }
-            imgSurface.BlitSurface();
+            mySurface.BlitSurface();
         }
-
-        imgSurface.DestroyWindow();
+        mySurface.DestroyWindow();
     }
 }

@@ -90,11 +90,23 @@ class SDLApp {
                     // Loop through and update specific pixels
                     // NOTE: No bounds checking performed --
                     //       think about how you might fix this :)
-                    int brushSize=mySurface.GetBrushSize();
+                    int brushSize=mySurface.getBrushSize();
                     for(int w=-brushSize; w < brushSize; w++){
                         for(int h=-brushSize; h < brushSize; h++){
                             mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
                         }
+                    }
+                } else if(e.type == SDL_KEYDOWN) {
+                    if (e.key.keysym.sym == SDLK_UP) {
+                        mySurface.IncreaseBrushSize();
+                    } else if (e.key.keysym.sym == SDLK_DOWN) {
+                        mySurface.DecreaseBrushSize();
+                    } else if (e.key.keysym.sym == SDLK_LEFT) {
+                        mySurface.nextColor();
+                    } else if (e.key.keysym.sym == SDLK_RIGHT) {
+                        mySurface.previousColor();
+                    } else if (e.key.keysym.sym == SDLK_SPACE) {
+                        mySurface.ClearSurface();
                     }
                 }
             }

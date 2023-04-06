@@ -26,6 +26,7 @@ class Surface {
         SDL_WINDOW_SHOWN);
         // Load the bitmap surface
         imgSurface = SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
+        SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
         color = Color(255,255,255);
         setMediumBrush();
     }
@@ -58,7 +59,7 @@ class Surface {
         scope(exit) SDL_UnlockSurface(imgSurface);
 
         //TODO: delete when done testing
-        setColorRed();
+        //setColorRed();
 
         Color color = getColor();
 
@@ -87,20 +88,20 @@ class Surface {
         return pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+2];
     }
 
-    int GetBrushSize() {
-        return brushSize;
-    }
-
-    void setBrushSize(int size) {
-        brushSize = size;
-    }
-
     Color getColor() {
         return color;
     }
 
     void setColor(Color* color) {
         this.color = *color;
+    }
+
+    int getBrushSize() {
+        return brushSize;
+    }
+
+    void setBrushSize(int size) {
+        brushSize = size;
     }
 
     //These functions will be linked to buttons in the UI
@@ -139,4 +140,55 @@ class Surface {
     void setLargeBrush() {
         setBrushSize(8);
     }
+
+    void IncreaseBrushSize() {
+        setBrushSize(getBrushSize() + 1);
+    }
+
+    void DecreaseBrushSize() {
+        setBrushSize(getBrushSize() - 1);
+    }
+
+    void nextColor() {
+        if (getColor().r == 255 && getColor().g == 255 && getColor().b == 255) {
+            setColorOrange();
+        } else if (getColor().r == 255 && getColor().g == 165 && getColor().b == 0) {
+            setColorPurple();
+        } else if (getColor().r == 128 && getColor().g == 0 && getColor().b == 128) {
+            setColorGreen();
+        } else if (getColor().r == 124 && getColor().g == 252 && getColor().b == 0) {
+            setColorBlue();
+        } else if (getColor().r == 0 && getColor().g == 0 && getColor().b == 255) {
+            setColorRed();
+        } else if (getColor().r == 255 && getColor().g == 0 && getColor().b == 0) {
+            setEraser();
+        } else if (getColor().r == 0 && getColor().g == 0 && getColor().b == 0) {
+            setColor(new Color(255,255,255));
+        }
+    }
+
+    void previousColor() {
+        if (getColor().r == 255 && getColor().g == 255 && getColor().b == 255) {
+            setEraser();
+        } else if (getColor().r == 255 && getColor().g == 165 && getColor().b == 0) {
+            setColor(new Color(255,255,255));
+        } else if (getColor().r == 128 && getColor().g == 0 && getColor().b == 128) {
+            setColorOrange();
+        } else if (getColor().r == 124 && getColor().g == 252 && getColor().b == 0) {
+            setColorPurple();
+        } else if (getColor().r == 0 && getColor().g == 0 && getColor().b == 255) {
+            setColorGreen();
+        } else if (getColor().r == 255 && getColor().g == 0 && getColor().b == 0) {
+            setColorBlue();
+        } else if (getColor().r == 0 && getColor().g == 0 && getColor().b == 0) {
+            setColorRed();
+        }
+    }
+
+    void ClearSurface() {
+        SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
+    }
+
+    
+
 }

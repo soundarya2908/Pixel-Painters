@@ -58,9 +58,6 @@ class Surface {
         // Make sure to unlock the surface when we are done.
         scope(exit) SDL_UnlockSurface(imgSurface);
 
-        //TODO: delete when done testing
-        //setColorRed();
-
         Color color = getColor();
 
         // Retrieve the pixel arraay that we want to modify
@@ -109,6 +106,14 @@ class Surface {
         setColor(new Color(255,165,0));
     }
 
+    void setColorBlack() {
+        setColor(new Color(0,0,0));
+    }
+
+    void setColorWhite() {
+        setColor(new Color(255,255,255));
+    }
+
     void setColorPurple() {
         setColor(new Color(128,0,128));
     }
@@ -126,7 +131,7 @@ class Surface {
     }
 
     void setEraser() {
-        setColor(new Color(0,0,0));
+        setColor(new Color(50,50,50));
     }
 
     void setSmallBrush() {

@@ -59,7 +59,7 @@ class Surface {
         scope(exit) SDL_UnlockSurface(imgSurface);
 
         //TODO: delete when done testing
-        //setColorRed();
+        //setColorOrange();
 
         Color color = getColor();
 
@@ -107,6 +107,14 @@ class Surface {
     //These functions will be linked to buttons in the UI
     void setColorOrange() {
         setColor(new Color(255,165,0));
+    }
+
+    void setColorBlack() {
+        setColor(new Color(0,0,0));
+    }
+
+    void setColorWhite() {
+        setColor(new Color(255,255,255));
     }
 
     void setColorPurple() {

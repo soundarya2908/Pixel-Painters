@@ -59,6 +59,7 @@ class SDLApp {
 
     void MainApplicationLoop() {
         Surface mySurface = new Surface();
+        Surface windowSurface = SDL_GetWindowSurface(mySurface.getWindow());
 
         // Flag for determing if we are running the main application loop
         bool runApplication = true;
@@ -80,7 +81,14 @@ class SDLApp {
                     runApplication= false;
                 }
                 else if(e.type == SDL_MOUSEBUTTONDOWN){
-                    drawing=true;
+                    if (e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 80 && e.button.y >= 0 && e.button.y <= 60) {
+                        mySurface.IncreaseBrushSize();
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 80 && e.button.y > 60 && e.button.y <= 120) {
+                        mySurface.DecreaseBrushSize();
+                    } else {
+                        drawing=true;
+                    }
+                    
                 }else if(e.type == SDL_MOUSEBUTTONUP){
                     drawing=false;
                 }else if(e.type == SDL_MOUSEMOTION && drawing){

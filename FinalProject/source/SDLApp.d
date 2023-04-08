@@ -59,7 +59,6 @@ class SDLApp {
 
     void MainApplicationLoop() {
         Surface mySurface = new Surface();
-        Surface windowSurface = SDL_GetWindowSurface(mySurface.getWindow());
 
         // Flag for determing if we are running the main application loop
         bool runApplication = true;

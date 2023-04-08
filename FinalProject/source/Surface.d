@@ -25,8 +25,21 @@ class Surface {
         480,
         SDL_WINDOW_SHOWN);
         // Load the bitmap surface
-        imgSurface = SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
-        SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
+        imgSurface = SDL_GetWindowSurface(window);// SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
+        //SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
+        
+        SDL_Surface* image;
+        SDL_Rect* rect;
+        image = SDL_LoadBMP("./../../media/plus.bmp");
+        // rect = new SDL_Rect(0,0,1000,1000);
+        SDL_BlitSurface(image, null, imgSurface, null);
+        // image = SDL_LoadBMP("./../../media/minus.bmp");
+        // rect = new SDL_Rect(0,1000,1000,1000);
+        // SDL_BlitSurface(image, rect, imgSurface, rect);
+        
+        SDL_UpdateWindowSurface(window);
+        SDL_FreeSurface(image);
+
         color = Color(255,255,255);
         setMediumBrush();
     }

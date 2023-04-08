@@ -80,7 +80,36 @@ class SDLApp {
                     runApplication= false;
                 }
                 else if(e.type == SDL_MOUSEBUTTONDOWN){
-                    drawing=true;
+                    if (e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y >= 0 && e.button.y <= 50) {
+                        mySurface.IncreaseBrushSize();
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 102 && e.button.y <= 152) {
+                        mySurface.DecreaseBrushSize();
+                    } 
+                    
+                    else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 201 && e.button.y <= 251) {
+                        mySurface.setColorBlack(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 252 && e.button.y <= 302) {
+                        mySurface.setColorWhite(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 303 && e.button.y <= 353) {
+                        mySurface.setColorBlue(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 354 && e.button.y <= 404) {
+                        mySurface.setColorPurple(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 405 && e.button.y <= 455) {
+                        mySurface.setColorGreen(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 456 && e.button.y <= 506) {
+                        mySurface.setColorOrange(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 507 && e.button.y <= 557) {
+                        mySurface.setColorRed(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 599 && e.button.y <= 649) {
+                        mySurface.setEraser(); 
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 650 && e.button.y <= 700) {
+                        mySurface.ClearSurface(); 
+                    }
+                    
+                    else {
+                        drawing=true;
+                    }
+                    
                 }else if(e.type == SDL_MOUSEBUTTONUP){
                     drawing=false;
                 }else if(e.type == SDL_MOUSEMOTION && drawing){

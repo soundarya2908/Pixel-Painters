@@ -21,12 +21,67 @@ class Surface {
         window= SDL_CreateWindow("D SDL Painting",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
-        SDL_WINDOW_SHOWN);
+        800,
+        700,
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         // Load the bitmap surface
-        imgSurface = SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
+        imgSurface = SDL_GetWindowSurface(window);// SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
         SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
+        
+        SDL_Surface* image;
+        SDL_Rect* rect;
+        // BlitSurface();
+        image = SDL_LoadBMP("./../media/plus.bmp");
+        rect = new SDL_Rect(0,0,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/brush.bmp");
+        rect = new SDL_Rect(0,51,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/minus.bmp");
+        rect = new SDL_Rect(0,102,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/black.bmp");
+        rect = new SDL_Rect(0,201,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/white.bmp");
+        rect = new SDL_Rect(0,252,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/blue.bmp");
+        rect = new SDL_Rect(0,303,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/purple.bmp");
+        rect = new SDL_Rect(0,354,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/green.bmp");
+        rect = new SDL_Rect(0,405,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/orange.bmp");
+        rect = new SDL_Rect(0,456,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/red.bmp");
+        rect = new SDL_Rect(0,507,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/eraser.bmp");
+        rect = new SDL_Rect(0,599,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/clear-screen.bmp");
+        rect = new SDL_Rect(0,650,50,50);
+        SDL_BlitSurface(image, null, imgSurface, rect);
+        
+        SDL_UpdateWindowSurface(window);
+        SDL_FreeSurface(image);
+
         color = Color(255,255,255);
         setMediumBrush();
     }
@@ -191,7 +246,8 @@ class Surface {
     }
 
     void ClearSurface() {
-        SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
+        SDL_Rect* rect = new SDL_Rect(50,0,750,700);
+        SDL_FillRect(imgSurface,rect,SDL_MapRGB(imgSurface.format,50,50,50));
     }
 
     

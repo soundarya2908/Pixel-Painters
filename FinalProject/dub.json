@@ -5,6 +5,52 @@
 		"Soundarya Srikanta"
 	],
 	"copyright": "Copyright © 2023, Jackson Schilling, Divya Jangid, Soundarya Srikanta",
+	"configurations": [
+		{
+			"dependencies": {
+				"unit-threaded": "~>2.1.2"
+			},
+			"excludedSourceFiles": [
+				"source/client.d",
+				"source/client/*",
+				"source/app.d"
+			],
+			"mainSourceFile": "source/server.d",
+			"name": "Server",
+			"targetName": "server",
+			"targetType": "executable"
+		},
+		{
+			"dependencies": {
+				"bindbc-sdl": "~>1.2.4",
+				"unit-threaded": "~>2.1.2"
+			},
+			"excludedSourceFiles": [
+				"source/server.d",
+				"source/server/*"
+			],
+			"mainSourceFile": "source/app.d",
+			"name": "PaintApp",
+			"targetName": "client",
+			"targetType": "executable"
+		},
+		{
+			"dependencies": {
+				"bindbc-sdl": "~>1.2.4",
+				"unit-threaded": "~>2.1.2"
+			},
+			"excludedSourceFiles": [
+				"source/server.d",
+				"source/client.d"
+			],
+			"mainSourceFile": "bin/ut.d",
+			"name": "unittest",
+			"preBuildCommands": [
+				"dub run unit-threaded -c gen_ut_main -- -f bin/ut.d -d dub"
+			],
+			"targetType": "executable"
+		}
+	],
 	"dependencies": {
 		"bindbc-sdl": "~>1.2.4"
 	},

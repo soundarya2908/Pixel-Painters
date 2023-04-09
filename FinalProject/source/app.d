@@ -16,6 +16,6 @@ import SDLApp : SDLApp;
 // Entry point to program
 void main()
 {
-	SDLApp myApp = new SDLApp();
+	SDLApp myApp = new SDLApp("localhost", 50002);
 	myApp.MainApplicationLoop();
 }

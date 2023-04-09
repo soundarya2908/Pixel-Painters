@@ -62,7 +62,7 @@ void main(){
 
                     // Setup a packet to echo back
                     // to the client
-                    Packet p;
+                    /*Packet p;
                     p.user 	= "connecting...";
                     byte[4] field1 =  buffer[16 .. 20].dup;
                     byte[4] field2 =  buffer[20 .. 24].dup;
@@ -70,7 +70,7 @@ void main(){
                     int f2 = *cast(int*)&field2;
                     p.x = f1;
                     p.y = f2;
-
+*/
                     if (clientData !=0 && clientData!= Socket.ERROR) {
                         broadcastToOtherClients(connectedClientsList, client, buffer);
                     }
@@ -96,17 +96,17 @@ void main(){
 }
 
 void broadcastToOtherClients(Socket[] connectedClientsList, Socket sender, byte[Packet.sizeof] buffer) {
-    Packet p;
+    /*Packet p;
     p.user 	= "connecting...";
     byte[4] field1 =  buffer[16 .. 20].dup;
     byte[4] field2 =  buffer[20 .. 24].dup;
     int f1 = *cast(int*)&field1;
     int f2 = *cast(int*)&field2;
     p.x = f1;
-    p.y = f2;
+    p.y = f2;*/
     foreach(client; connectedClientsList) {
         if (client != sender) {
-            client.send(p.GetPacketAsBytes());
+            client.send(buffer);
         }
     }
 }

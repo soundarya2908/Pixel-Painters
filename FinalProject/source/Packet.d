@@ -28,6 +28,7 @@ struct Packet{
     byte r;
     byte g;
     byte b;
+    int brushSize;
     char[64] message; // for debugging
 
     /// Purpose of this function is to pack a bunch of
@@ -35,21 +36,37 @@ struct Packet{
     /// ability to send back and forth across a server, or for
     /// otherwise saving to disk.
     char[Packet.sizeof] GetPacketAsBytes(){
-        user = "test user\0";
-        message = "test message\0";
-        char[Packet.sizeof] payload;
-        // Populate the payload with some bits
-        // I used memmove for this to move the bits.
-        memmove(&payload,&user,user.sizeof);
-        // Populate the color with some bytes
-        import std.stdio;
-        writeln("x is:",x);
-        writeln("y is:",y);
-        memmove(&payload[16],&x,x.sizeof);
-        memmove(&payload[20],&y,y.sizeof);
-
-        return payload;
+        char[Packet.sizeof] buffer = new char[Packet.sizeof];
+        // Populate the buffer with the packet data
+        memmove(&buffer, &user, user.sizeof);
+        memmove(&buffer[16], &x, x.sizeof);
+        memmove(&buffer[20], &y, y.sizeof);
+        buffer[24] = r;
+        buffer[25] = g;
+        buffer[26] = b;
+        memmove(&buffer[27], &brushSize, brushSize.sizeof);
+        memmove(&buffer[31], &message, message.sizeof);
+        return buffer;
     }
+
+    static Packet getPacketFromBytes(char[Packet.sizeof] buffer, size_t bufferSize){
+        Packet packet;
+        // Check that the buffer is big enough to contain a Packet
+        if (bufferSize < Packet.sizeof){
+            return packet;
+        }
+        // Populate the packet fields with data from the buffer
+        memmove(&packet.user, &buffer[0], packet.user.sizeof);
+        memmove(&packet.x, &buffer[16], packet.x.sizeof);
+        memmove(&packet.y, &buffer[20], packet.y.sizeof);
+        packet.r = buffer[24];
+        packet.g = buffer[25];
+        packet.b = buffer[26];
+        memmove(&packet.brushSize, &buffer[27], packet.brushSize.sizeof);
+        memmove(&packet.message, &buffer[31], packet.message.sizeof);
+        return packet;
+    }
+
 
 
 }

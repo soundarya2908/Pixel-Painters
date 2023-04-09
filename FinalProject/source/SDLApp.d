@@ -8,6 +8,11 @@ import loader = bindbc.loader.sharedlib;
 
 import Surface : Surface;
 import Surface : Color;
+import std.socket;
+import std.stdio;
+import Packet:Packet;
+import std.conv;
+import core.thread;
 
 class SDLApp {
 
@@ -59,12 +64,49 @@ class SDLApp {
 
     void MainApplicationLoop() {
         Surface mySurface = new Surface();
+        auto socket = new Socket(AddressFamily.INET, SocketType.STREAM);
+        // Socket needs an 'endpoint', so we determine where we
+        // are going to connect to.
+        // NOTE: It's possible the port number is in use if you are not
+        //       able to connect. Try another one.
+        socket.connect(new InternetAddress("localhost", 50002));
+        scope(exit) socket.close();
+        writeln("Connected");
 
         // Flag for determing if we are running the main application loop
         bool runApplication = true;
         // Flag for determining if we are 'drawing' (i.e. mouse has been pressed
         //                                                but not yet released)
         bool drawing = false;
+
+        auto serverReader = new Thread(() {
+            char[Packet.sizeof] receiveBuffer;
+            while (runApplication) {
+                // Read data from socket
+                long bytesReceived = socket.receive(receiveBuffer);
+                if (bytesReceived > 0) {
+                    auto fromServer = receiveBuffer[0 .. bytesReceived];
+
+                    // Format the packet. Note, I am doing this in a very
+                    // verbosoe manner so you can see each step.
+                    Packet formattedPacket;
+                    formattedPacket = Packet.getPacketFromBytes(receiveBuffer,Packet.sizeof);
+                    writeln(formattedPacket);
+                    writeln(formattedPacket.x);
+                    writeln(formattedPacket.y);
+                    if (formattedPacket.x < 0 || formattedPacket.x >= 640 ||
+                    formattedPacket.y < 0 || formattedPacket.y >= 480) {
+                        writeln("Invalid pixel coordinates: ", formattedPacket.x, ", ", formattedPacket.y);
+                    } else {
+                        mySurface.UpdateSurfacePixel(formattedPacket.x, formattedPacket.y);
+                    }
+                }
+            }
+        });
+
+        // Start the server reader thread
+        serverReader.start();
+
 
         // Main application loop that will run until a quit event has occurred.
         // This is the 'main graphics loop'
@@ -94,6 +136,23 @@ class SDLApp {
                     for(int w=-brushSize; w < brushSize; w++){
                         for(int h=-brushSize; h < brushSize; h++){
                             mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
+                            Packet dataToSend;
+                            // The 'with' statement allows us to access an object
+                            // (i.e. member variables and member functions)
+                            // in a slightly more convenient way
+                            with (dataToSend){
+                                user = "clientName\0";
+                                // Just some 'dummy' data for now
+                                // that the 'client' will continuously send
+                                x = xPos;
+                                y = yPos;
+                                r = 49;
+                                g = 50;
+                                b = 51;
+                                message = "test\0";
+                            }
+                            // Send the packet of information
+                            socket.send(dataToSend.GetPacketAsBytes());
                         }
                     }
                 }

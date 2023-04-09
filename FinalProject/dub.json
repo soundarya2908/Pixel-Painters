@@ -12,7 +12,8 @@
 			},
 			"excludedSourceFiles": [
 				"source/client.d",
-				"source/client/*"
+				"source/client/*",
+				"source/app.d"
 			],
 			"mainSourceFile": "source/server.d",
 			"name": "Server",
@@ -28,7 +29,7 @@
 				"source/server.d",
 				"source/server/*"
 			],
-			"mainSourceFile": "source/client.d",
+			"mainSourceFile": "source/app.d",
 			"name": "PaintApp",
 			"targetName": "client",
 			"targetType": "executable"

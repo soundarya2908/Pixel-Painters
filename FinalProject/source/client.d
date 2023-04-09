@@ -5,7 +5,7 @@ import std.conv;
 // Packet
 import Packet : Packet;
 
-void main(){
+void run(){
     writeln("Starting client...attempt to create socket");
     // Create a socket for connecting to a server
     auto socket = new Socket(AddressFamily.INET, SocketType.STREAM);

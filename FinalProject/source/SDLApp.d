@@ -91,14 +91,17 @@ class SDLApp {
                     // verbosoe manner so you can see each step.
                     Packet formattedPacket;
                     formattedPacket = Packet.getPacketFromBytes(receiveBuffer,Packet.sizeof);
-                    writeln(formattedPacket);
-                    writeln(formattedPacket.x);
-                    writeln(formattedPacket.y);
-                    if (formattedPacket.x < 0 || formattedPacket.x >= 640 ||
-                    formattedPacket.y < 0 || formattedPacket.y >= 480) {
+                    if (formattedPacket.x < 0 || formattedPacket.x >= 800 ||
+                    formattedPacket.y < 0 || formattedPacket.y >= 700) {
                         writeln("Invalid pixel coordinates: ", formattedPacket.x, ", ", formattedPacket.y);
                     } else {
-                        mySurface.UpdateSurfacePixel(formattedPacket.x, formattedPacket.y);
+                        int brshSize = formattedPacket.brushSize;
+                        mySurface.setColor(new Color(formattedPacket.r, formattedPacket.g, formattedPacket.b));
+                        for(int w=-brshSize; w < brshSize; w++){
+                            for (int h=-brshSize; h < brshSize; h++){
+                                mySurface.UpdateSurfacePixel(formattedPacket.x+w, formattedPacket.y+h);
+                            }
+                        }
                     }
                 }
             }
@@ -161,9 +164,9 @@ class SDLApp {
                     // Loop through and update specific pixels
                     // NOTE: No bounds checking performed --
                     //       think about how you might fix this :)
-                    int brushSize=mySurface.getBrushSize();
-                    for(int w=-brushSize; w < brushSize; w++){
-                        for(int h=-brushSize; h < brushSize; h++){
+                    int brshSize=mySurface.getBrushSize();
+                    for(int w=-brshSize; w < brshSize; w++){
+                        for(int h=-brshSize; h < brshSize; h++){
                             mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
                             Packet dataToSend;
                             // The 'with' statement allows us to access an object
@@ -175,9 +178,10 @@ class SDLApp {
                                 // that the 'client' will continuously send
                                 x = xPos;
                                 y = yPos;
-                                r = 49;
-                                g = 50;
-                                b = 51;
+                                r = mySurface.getColor().r;
+                                g = mySurface.getColor().g;
+                                b = mySurface.getColor().b;
+                                brushSize = brshSize;
                                 message = "test\0";
                             }
                             // Send the packet of information

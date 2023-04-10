@@ -189,18 +189,6 @@ class Surface {
         setColor(new Color(50,50,50));
     }
 
-    void setSmallBrush() {
-        setBrushSize(2);
-    }
-
-    void setMediumBrush() {
-        setBrushSize(4);
-    }
-
-    void setLargeBrush() {
-        setBrushSize(8);
-    }
-
     void IncreaseBrushSize() {
         setBrushSize(getBrushSize() + 1);
     }

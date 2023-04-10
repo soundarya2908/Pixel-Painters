@@ -205,6 +205,7 @@ class Surface {
         }
     }
 
+    //TODO: maybe worth making this a switch statement and creating predefined color structs
     void nextColor() {
         if (getColor().r == 255 && getColor().g == 255 && getColor().b == 255) {
             setColorOrange();

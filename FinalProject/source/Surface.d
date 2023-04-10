@@ -83,7 +83,7 @@ class Surface {
         SDL_FreeSurface(image);
 
         color = Color(255,255,255);
-        setMediumBrush();
+        setBrushSize(6);
     }
 
     ~this() {
@@ -190,11 +190,19 @@ class Surface {
     }
 
     void IncreaseBrushSize() {
-        setBrushSize(getBrushSize() + 1);
+        if (getBrushSize() < 16) {
+            setBrushSize(getBrushSize() + 2);
+        } else {
+            setBrushSize(16);
+        }
     }
 
     void DecreaseBrushSize() {
-        setBrushSize(getBrushSize() - 1);
+        if (getBrushSize() > 2) {
+            setBrushSize(getBrushSize() - 2);
+        } else {
+            setBrushSize(2);
+        }
     }
 
     void nextColor() {

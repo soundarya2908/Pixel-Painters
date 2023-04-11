@@ -130,8 +130,9 @@ class SDLApp {
                     int yPos = e.button.y;
                     int brshSize=mySurface.getBrushSize();
 
-                    draw(xPos, yPos, brshSize, true);
-
+                    if(xPos > 55) {
+                        draw(xPos, yPos, brshSize, true);
+                    }
                 } else if(e.type == SDL_KEYDOWN) {
                     if (e.key.keysym.sym == SDLK_UP) {
                         mySurface.IncreaseBrushSize();
@@ -143,6 +144,10 @@ class SDLApp {
                         mySurface.previousColor();
                     } else if (e.key.keysym.sym == SDLK_SPACE) {
                         mySurface.ClearSurface();
+                    } else if (e.key.keysym.sym == SDLK_u && SDL_GetModState() & KMOD_CTRL) {
+                        writeln("undo operation");
+                    } else if (e.key.keysym.sym == SDLK_r && SDL_GetModState() & KMOD_CTRL) {
+                        writeln("redo operation");
                     }
                 }
             }

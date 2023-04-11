@@ -154,11 +154,9 @@ class SDLApp {
                         serverSocket.send(dataToSend.GetPacketAsBytes());
                         undoStack = new Packet[0];
                     } else if (e.key.keysym.sym == SDLK_u && SDL_GetModState() & KMOD_CTRL) {
-                        writeln("undo operation");
                         undo();
                     } else if (e.key.keysym.sym == SDLK_r && SDL_GetModState() & KMOD_CTRL) {
-                        writeln("redo operation");
-                        //mySurface.redo();
+                        redo();
                     }
                 }
             }
@@ -239,7 +237,7 @@ class SDLApp {
     void undo() {
         writeln("undoStack.length: ",undoStack.length);
         if (undoStack.length > 0) {
-            auto numUndos = 400;
+            auto numUndos = 600;
 
             for (int i = 0; i < numUndos; i++) {
                 if (undoStack.length > 0) {
@@ -249,6 +247,25 @@ class SDLApp {
                     mySurface.setEraser();
                     draw(packetToUndo.x, packetToUndo.y, packetToUndo.brushSize, true, true);
                     mySurface.setColor(new Color(packetToUndo.r, packetToUndo.g, packetToUndo.b));
+                    redoStack ~= packetToUndo;
+                }
+            }
+        }
+    }
+
+    void redo() {
+        writeln("redoStack.length: ",redoStack.length);
+        if (redoStack.length > 0) {
+            auto numRedos = 600;
+
+            for (int i = 0; i < numRedos; i++) {
+                if (redoStack.length > 0) {
+                    Packet packetToRedo = redoStack[redoStack.length-1];
+                    redoStack = redoStack[0..redoStack.length-1];
+
+                    mySurface.setColor(new Color(packetToRedo.r, packetToRedo.g, packetToRedo.b));
+                    draw(packetToRedo.x, packetToRedo.y, packetToRedo.brushSize, true, true);
+                    undoStack ~= packetToRedo;
                 }
             }
         }

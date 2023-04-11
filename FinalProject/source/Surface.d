@@ -246,20 +246,4 @@ class Surface {
         SDL_Rect* rect = new SDL_Rect(50,0,750,700);
         SDL_FillRect(imgSurface,rect,SDL_MapRGB(imgSurface.format,50,50,50));
     }
-
-    //void redo() {
-    //    if (redoStack.length > 0) {
-    //        int[] redo = redoStack[redoStack.length-1];
-    //        redoStack.remove(redoStack.length-1);
-    //        int xPos = redo[0];
-    //        int yPos = redo[1];
-    //        int red = redo[2];
-    //        int green = redo[3];
-    //        int blue = redo[3];
-    //        Color color = new Color(red,green,blue);
-    //        setColor(&color);
-    //        Draw(xPos,yPos);
-    //    }
-    //}
-
 }

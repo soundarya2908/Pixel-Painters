@@ -8,6 +8,7 @@ import loader = bindbc.loader.sharedlib;
 
 import Surface : Surface;
 import Surface : Color;
+import Surface : Pixel;
 import std.socket;
 import std.stdio;
 import Packet:Packet;
@@ -146,8 +147,13 @@ class SDLApp {
                         mySurface.ClearSurface();
                     } else if (e.key.keysym.sym == SDLK_u && SDL_GetModState() & KMOD_CTRL) {
                         writeln("undo operation");
+                        for (int i = 0; i < 1000; i++) {
+                            mySurface.undo();
+                        }
+                        mySurface.undo();
                     } else if (e.key.keysym.sym == SDLK_r && SDL_GetModState() & KMOD_CTRL) {
                         writeln("redo operation");
+                        //mySurface.redo();
                     }
                 }
             }
@@ -163,6 +169,7 @@ class SDLApp {
         for(int w=-brshSize; w < brshSize; w++){
             for(int h=-brshSize; h < brshSize; h++){
                 mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
+                mySurface.undoStack ~= Pixel(xPos+w,yPos+h,mySurface.getColor());
                 if(sendData) {
                     Packet dataToSend = getPacketData(xPos, yPos, brshSize, "test90");
                     // Send the packet of information

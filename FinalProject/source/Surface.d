@@ -10,11 +10,19 @@ struct Color {
     ubyte b;
 }
 
+struct Pixel {
+    int xPos;
+    int yPos;
+    Color color;
+}
+
 class Surface {
     SDL_Surface* imgSurface;
     SDL_Window* window;
     private Color color;
     private int brushSize;
+    Pixel[] undoStack;
+    Pixel[] redoStack;
 
     this() {
         // Create an SDL window
@@ -84,6 +92,9 @@ class Surface {
 
         color = Color(255,255,255);
         setBrushSize(6);
+
+        undoStack = new Pixel[0];
+        redoStack = new Pixel[0];
     }
 
     ~this() {
@@ -245,8 +256,38 @@ class Surface {
     void ClearSurface() {
         SDL_Rect* rect = new SDL_Rect(50,0,750,700);
         SDL_FillRect(imgSurface,rect,SDL_MapRGB(imgSurface.format,50,50,50));
+        undoStack = new Pixel[0];
     }
 
-    
+    void undo() {
+        writeln("undoStack.length: ",undoStack.length);
+        if (undoStack.length > 0) {
+            Pixel pixelToUndo = undoStack[undoStack.length-1];
+            undoStack = undoStack[0..undoStack.length-1];
+
+            int xPos = pixelToUndo.xPos;
+            int yPos = pixelToUndo.yPos;
+            Color color = pixelToUndo.color;
+
+            setEraser();
+            UpdateSurfacePixel(xPos,yPos);
+            setColor(&color);
+        }
+    }
+
+    //void redo() {
+    //    if (redoStack.length > 0) {
+    //        int[] redo = redoStack[redoStack.length-1];
+    //        redoStack.remove(redoStack.length-1);
+    //        int xPos = redo[0];
+    //        int yPos = redo[1];
+    //        int red = redo[2];
+    //        int green = redo[3];
+    //        int blue = redo[3];
+    //        Color color = new Color(red,green,blue);
+    //        setColor(&color);
+    //        Draw(xPos,yPos);
+    //    }
+    //}
 
 }

@@ -23,7 +23,7 @@ class Surface {
         SDL_WINDOWPOS_UNDEFINED,
         800,
         700,
-        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        SDL_WINDOW_SHOWN);
         // Load the bitmap surface
         imgSurface = SDL_GetWindowSurface(window);// SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
         SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));

@@ -246,7 +246,4 @@ class Surface {
         SDL_Rect* rect = new SDL_Rect(50,0,750,700);
         SDL_FillRect(imgSurface,rect,SDL_MapRGB(imgSurface.format,50,50,50));
     }
-
-    
-
 }

@@ -11,6 +11,7 @@ class Server {
         Socket[] connectedClientsList;
         string host;
         ushort port;
+        Packet[] packetHistory;
 
     public:
         this(string host, ushort port) {
@@ -28,7 +29,7 @@ class Server {
         writeln("Server must be started before clients may join");
 
         // Message buffer will be large enough to send/receive Packet.sizeof
-        byte[Packet.sizeof] buffer;
+        char[Packet.sizeof] buffer;
 
         bool serverIsRunning=true;
 
@@ -58,6 +59,10 @@ class Server {
                         // server to the client
                         auto clientData = client.receive(buffer);
 
+                        Packet receivedPacket;
+                        receivedPacket = Packet.getPacketFromBytes(buffer, Packet.sizeof);
+                        packetHistory ~= receivedPacket;
+
                         if (clientData !=0 && clientData!= Socket.ERROR) {
                             broadcastToOtherClients(connectedClientsList, client, buffer);
                         }
@@ -79,13 +84,17 @@ class Server {
             // proceed forward.
             newSocket.send("Welcome from server, you are now in our connectedClientsList");
 
+            foreach(packet; packetHistory) {
+                newSocket.send(packet.GetPacketAsBytes());
+            }
+
             // Add a new client to the list
             connectedClientsList ~= newSocket;
             writeln("> client",connectedClientsList.length," added to connectedClientsList");
         }
     }
 
-    void broadcastToOtherClients(Socket[] connectedClientsList, Socket sender, byte[Packet.sizeof] buffer) {
+    void broadcastToOtherClients(Socket[] connectedClientsList, Socket sender, char[Packet.sizeof] buffer) {
         foreach(client; connectedClientsList) {
             if (client != sender) {
                 client.send(buffer);

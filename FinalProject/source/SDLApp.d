@@ -8,17 +8,31 @@ import loader = bindbc.loader.sharedlib;
 
 import Surface : Surface;
 import Surface : Color;
+import std.socket;
+import std.stdio;
+import Packet:Packet;
+import std.conv;
+import core.thread;
 
 class SDLApp {
+    private:
+        Surface mySurface;
+        Socket serverSocket;
+        Packet[] packetHistory;
 
-    this() {
-        InitializeSDL();
-    }
+    public:
+        this(string serverHost, ushort serverPort) {
+            InitializeSDL();
+            mySurface = new Surface();
+            serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM);
+            serverSocket.connect(new InternetAddress(serverHost,serverPort));
+            writeln("Connercted to the Server");
+        }
 
-    ~this() {
-        SDL_Quit();
-        writeln("Ending application--good bye!");
-    }
+        ~this() {
+            SDL_Quit();
+            writeln("Ending application--good bye!");
+        }
 
     void InitializeSDL() {
         SDLSupport ret;
@@ -58,13 +72,13 @@ class SDLApp {
     }
 
     void MainApplicationLoop() {
-        Surface mySurface = new Surface();
-
         // Flag for determing if we are running the main application loop
         bool runApplication = true;
         // Flag for determining if we are 'drawing' (i.e. mouse has been pressed
         //                                                but not yet released)
         bool drawing = false;
+
+        refreshClientScreen();
 
         // Main application loop that will run until a quit event has occurred.
         // This is the 'main graphics loop'
@@ -79,14 +93,12 @@ class SDLApp {
                 if(e.type == SDL_QUIT){
                     runApplication= false;
                 }
-                else if(e.type == SDL_MOUSEBUTTONDOWN){
+                else if(e.type == SDL_MOUSEBUTTONDOWN) {
                     if (e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y >= 0 && e.button.y <= 50) {
                         mySurface.IncreaseBrushSize();
                     } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 102 && e.button.y <= 152) {
                         mySurface.DecreaseBrushSize();
-                    } 
-                    
-                    else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 201 && e.button.y <= 251) {
+                    } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 201 && e.button.y <= 251) {
                         mySurface.setColorBlack(); 
                     } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 252 && e.button.y <= 302) {
                         mySurface.setColorWhite(); 
@@ -103,28 +115,23 @@ class SDLApp {
                     } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 599 && e.button.y <= 649) {
                         mySurface.setEraser(); 
                     } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 650 && e.button.y <= 700) {
-                        mySurface.ClearSurface(); 
-                    }
-                    
-                    else {
+                        mySurface.ClearSurface();
+                        Packet dataToSend = getPacketData(-1,-1, 3, "reset\0");
+                        // Send the packet of information
+                        serverSocket.send(dataToSend.GetPacketAsBytes());
+                    } else {
                         drawing=true;
                     }
-                    
-                }else if(e.type == SDL_MOUSEBUTTONUP){
+                } else if(e.type == SDL_MOUSEBUTTONUP){
                     drawing=false;
-                }else if(e.type == SDL_MOUSEMOTION && drawing){
+                } else if(e.type == SDL_MOUSEMOTION && drawing){
                     // retrieve the position
                     int xPos = e.button.x;
                     int yPos = e.button.y;
-                    // Loop through and update specific pixels
-                    // NOTE: No bounds checking performed --
-                    //       think about how you might fix this :)
-                    int brushSize=mySurface.getBrushSize();
-                    for(int w=-brushSize; w < brushSize; w++){
-                        for(int h=-brushSize; h < brushSize; h++){
-                            mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
-                        }
-                    }
+                    int brshSize=mySurface.getBrushSize();
+
+                    draw(xPos, yPos, brshSize, true);
+
                 } else if(e.type == SDL_KEYDOWN) {
                     if (e.key.keysym.sym == SDLK_UP) {
                         mySurface.IncreaseBrushSize();
@@ -142,5 +149,71 @@ class SDLApp {
             mySurface.BlitSurface();
         }
         mySurface.DestroyWindow();
+    }
+
+    void draw(int xPos, int yPos,int brshSize, bool sendData) {
+        // Loop through and update specific pixels
+        // NOTE: No bounds checking performed --
+        //       think about how you might fix this :)
+        for(int w=-brshSize; w < brshSize; w++){
+            for(int h=-brshSize; h < brshSize; h++){
+                mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
+                if(sendData) {
+                    Packet dataToSend = getPacketData(xPos, yPos, brshSize, "test90");
+                    // Send the packet of information
+                    serverSocket.send(dataToSend.GetPacketAsBytes());
+                }
+            }
+        }
+    }
+
+    Packet getPacketData(int xPos, int yPos, int brshSize, string msg) {
+        Packet dataToSend ;
+        // The 'with' statement allows us to access an object
+        // (i.e. member variables and member functions)
+        // in a slightly more convenient way
+        with (dataToSend){
+            user = "clientName\0";
+            // Just some 'dummy' data for now
+            // that the 'client' will continuously send
+            x = xPos;
+            y = yPos;
+            r = mySurface.getColor().r;
+            g = mySurface.getColor().g;
+            b = mySurface.getColor().b;
+            brushSize = brshSize;
+            message = "test\0";
+        }
+        return dataToSend;
+    }
+
+    void refreshClientScreen() {
+        auto serverReader = new Thread(() {
+            char[Packet.sizeof] receiveBuffer;
+            while (true) {
+                // Read data from socket
+                long bytesReceived = serverSocket.receive(receiveBuffer);
+                if (bytesReceived > 0) {
+                    auto fromServer = receiveBuffer[0 .. bytesReceived];
+
+                    // Format the packet. Note, I am doing this in a very
+                    // verbosoe manner so you can see each step.
+                    Packet formattedPacket;
+                    formattedPacket = Packet.getPacketFromBytes(receiveBuffer,Packet.sizeof);
+
+                    if (formattedPacket.x < 0 || formattedPacket.x >= 800 || formattedPacket.y < 0 || formattedPacket.y >= 700) {
+                        mySurface.ClearSurface();
+                    } else {
+                        int brshSize = formattedPacket.brushSize;
+                        mySurface.setColor(new Color(formattedPacket.r, formattedPacket.g, formattedPacket.b));
+
+                        draw(formattedPacket.x, formattedPacket.y, brshSize, false);
+                    }
+                }
+            }
+        });
+
+        // Start the server reader thread
+        serverReader.start();
     }
 }

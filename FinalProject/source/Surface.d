@@ -83,7 +83,7 @@ class Surface {
         SDL_FreeSurface(image);
 
         color = Color(255,255,255);
-        setMediumBrush();
+        setBrushSize(6);
     }
 
     ~this() {
@@ -189,26 +189,23 @@ class Surface {
         setColor(new Color(50,50,50));
     }
 
-    void setSmallBrush() {
-        setBrushSize(2);
-    }
-
-    void setMediumBrush() {
-        setBrushSize(4);
-    }
-
-    void setLargeBrush() {
-        setBrushSize(8);
-    }
-
     void IncreaseBrushSize() {
-        setBrushSize(getBrushSize() + 1);
+        if (getBrushSize() < 16) {
+            setBrushSize(getBrushSize() + 2);
+        } else {
+            setBrushSize(16);
+        }
     }
 
     void DecreaseBrushSize() {
-        setBrushSize(getBrushSize() - 1);
+        if (getBrushSize() > 2) {
+            setBrushSize(getBrushSize() - 2);
+        } else {
+            setBrushSize(2);
+        }
     }
 
+    //TODO: maybe worth making this a switch statement and creating predefined color structs
     void nextColor() {
         if (getColor().r == 255 && getColor().g == 255 && getColor().b == 255) {
             setColorOrange();

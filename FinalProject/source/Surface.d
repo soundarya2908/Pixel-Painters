@@ -127,7 +127,7 @@ class Surface {
 
     int getRed(int xPos, int yPos) {
         ubyte* pixelArray = cast(ubyte*)imgSurface.pixels;
-        return pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+0];
+        return pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+2];
     }
 
     int getGreen(int xPos, int yPos) {
@@ -137,7 +137,7 @@ class Surface {
 
     int getBlue(int xPos, int yPos) {
         ubyte* pixelArray = cast(ubyte*)imgSurface.pixels;
-        return pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+2];
+        return pixelArray[yPos*imgSurface.pitch + xPos*imgSurface.format.BytesPerPixel+0];
     }
 
     Color getColor() {

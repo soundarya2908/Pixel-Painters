@@ -23,6 +23,7 @@ class SDLApp {
         Packet[] undoStack;
         Packet[] redoStack;
         bool runInStandAloneMode;
+        static bool isSDLLoaded;
 
     public:
         this(string serverHost, ushort serverPort, bool runStandalone) {
@@ -55,6 +56,10 @@ class SDLApp {
         }
 
     static synchronized void InitializeSDL() {
+        if(isSDLLoaded) {
+            return;
+        }
+
         SDLSupport ret;
 
         version(Windows){
@@ -89,6 +94,7 @@ class SDLApp {
         if(SDL_Init(SDL_INIT_EVERYTHING) !=0){
             writeln("SDL_Init: ", fromStringz(SDL_GetError()));
         }
+        isSDLLoaded = true;
     }
 
     void MainApplicationLoop() {

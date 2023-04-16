@@ -3,6 +3,7 @@ import std.socket;
 import std.stdio;
 
 import Packet : Packet;
+import UserInput : UserInput;
 
 class Server {
     private:
@@ -104,6 +105,9 @@ class Server {
 }
 
 void main() {
-    auto server = new Server("localhost", 50002);
+    auto userInput =new UserInput();
+    string hostName = userInput.ValidatedHostNameInput();
+    ushort port = userInput.ValidatedPortInput();
+    auto server = new Server(hostName, port);
     server.runServer();
 }

@@ -12,76 +12,13 @@ struct Color {
 
 class Surface {
     SDL_Surface* imgSurface;
-    SDL_Window* window;
     private Color color;
     private int brushSize;
 
     this() {
-        // Create an SDL window
-        window= SDL_CreateWindow("D SDL Painting",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        800,
-        700,
-        SDL_WINDOW_SHOWN);
         // Load the bitmap surface
-        imgSurface = SDL_GetWindowSurface(window);// SDL_CreateRGBSurface(0,640,480,32,0,0,0,0);
+        imgSurface = SDL_CreateRGBSurface(0,800,700,32,0,0,0,0);
         SDL_FillRect(imgSurface,null,SDL_MapRGB(imgSurface.format,50,50,50));
-        
-        SDL_Surface* image;
-        SDL_Rect* rect;
-        // BlitSurface();
-        image = SDL_LoadBMP("./../media/plus.bmp");
-        rect = new SDL_Rect(0,0,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/brush.bmp");
-        rect = new SDL_Rect(0,51,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/minus.bmp");
-        rect = new SDL_Rect(0,102,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/black.bmp");
-        rect = new SDL_Rect(0,201,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/white.bmp");
-        rect = new SDL_Rect(0,252,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/blue.bmp");
-        rect = new SDL_Rect(0,303,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/purple.bmp");
-        rect = new SDL_Rect(0,354,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/green.bmp");
-        rect = new SDL_Rect(0,405,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/orange.bmp");
-        rect = new SDL_Rect(0,456,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/red.bmp");
-        rect = new SDL_Rect(0,507,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/eraser.bmp");
-        rect = new SDL_Rect(0,599,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-
-        image = SDL_LoadBMP("./../media/clear-screen.bmp");
-        rect = new SDL_Rect(0,650,50,50);
-        SDL_BlitSurface(image, null, imgSurface, rect);
-        
-        SDL_UpdateWindowSurface(window);
-        SDL_FreeSurface(image);
-
         color = Color(255,255,255);
         setBrushSize(6);
     }
@@ -90,21 +27,6 @@ class Surface {
         scope(exit) {
             SDL_FreeSurface(imgSurface);
         }
-    }
-
-    void BlitSurface() {
-        // Blit the surace (i.e. update the window with another surfaces pixels
-        //                       by copying those pixels onto the window).
-        SDL_BlitSurface(imgSurface,null,SDL_GetWindowSurface(window),null);
-        // Update the window surface
-        SDL_UpdateWindowSurface(window);
-        // Delay for 16 milliseconds
-        // Otherwise the program refreshes too quickly
-        SDL_Delay(16);
-    }
-
-    void DestroyWindow() {
-        SDL_DestroyWindow(window);
     }
 
     void UpdateSurfacePixel(int xPos, int yPos){

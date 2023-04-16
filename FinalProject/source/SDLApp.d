@@ -18,19 +18,35 @@ class SDLApp {
     private:
         Surface mySurface;
         Socket serverSocket;
+        SDL_Window* window;
         Packet[] packetHistory;
         Packet[] undoStack;
         Packet[] redoStack;
+        bool runInStandAloneMode;
 
     public:
-        this(string serverHost, ushort serverPort) {
+        this(string serverHost, ushort serverPort, bool runStandalone) {
             InitializeSDL();
             mySurface = new Surface();
-            serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM);
-            serverSocket.connect(new InternetAddress(serverHost,serverPort));
+            runInStandAloneMode = runStandalone;
+            if(!runInStandAloneMode) {
+                serverSocket = new Socket(AddressFamily.INET, SocketType.STREAM);
+                serverSocket.connect(new InternetAddress(serverHost,serverPort));
+                writeln("Connected to the Server");
+            } else{
+                writeln("Running the app in Standalone mode");
+            }
             undoStack = new Packet[0];
             redoStack = new Packet[0];
-            writeln("Connected to the Server");
+            // Create an SDL window
+            window= SDL_CreateWindow("D SDL Painting",
+            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_UNDEFINED,
+            800,
+            700,
+            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+            SDL_UpdateWindowSurface(window);
+            initSurface();
         }
 
         ~this() {
@@ -38,7 +54,7 @@ class SDLApp {
             writeln("Ending application--good bye!");
         }
 
-    void InitializeSDL() {
+    static synchronized void InitializeSDL() {
         SDLSupport ret;
 
         version(Windows){
@@ -82,7 +98,9 @@ class SDLApp {
         //                                                but not yet released)
         bool drawing = false;
 
-        refreshClientScreen();
+        if(!runInStandAloneMode) {
+            refreshClientScreen();
+        }
 
         // Main application loop that will run until a quit event has occurred.
         // This is the 'main graphics loop'
@@ -160,9 +178,9 @@ class SDLApp {
                     }
                 }
             }
-            mySurface.BlitSurface();
+            BlitSurface();
         }
-        mySurface.DestroyWindow();
+        DestroyWindow();
     }
 
     void draw(int xPos, int yPos,int brshSize, bool sendData, bool undoing) {
@@ -270,4 +288,74 @@ class SDLApp {
             }
         }
     }
+
+    void initSurface(){
+        SDL_Surface* image;
+        SDL_Rect* rect;
+        // BlitSurface();
+        image = SDL_LoadBMP("./../media/plus.bmp");
+        rect = new SDL_Rect(0,0,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/brush.bmp");
+        rect = new SDL_Rect(0,51,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/minus.bmp");
+        rect = new SDL_Rect(0,102,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/black.bmp");
+        rect = new SDL_Rect(0,201,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/white.bmp");
+        rect = new SDL_Rect(0,252,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/blue.bmp");
+        rect = new SDL_Rect(0,303,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/purple.bmp");
+        rect = new SDL_Rect(0,354,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/green.bmp");
+        rect = new SDL_Rect(0,405,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/orange.bmp");
+        rect = new SDL_Rect(0,456,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/red.bmp");
+        rect = new SDL_Rect(0,507,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/eraser.bmp");
+        rect = new SDL_Rect(0,599,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+
+        image = SDL_LoadBMP("./../media/clear-screen.bmp");
+        rect = new SDL_Rect(0,650,50,50);
+        SDL_BlitSurface(image, null, mySurface.imgSurface, rect);
+        SDL_FreeSurface(image);
+    }
+
+    void BlitSurface() {
+        // Blit the surace (i.e. update the window with another surfaces pixels
+        //                       by copying those pixels onto the window).
+        SDL_BlitSurface(mySurface.imgSurface,null,SDL_GetWindowSurface(window),null);
+        // Update the window surface
+        SDL_UpdateWindowSurface(window);
+        // Delay for 16 milliseconds
+        // Otherwise the program refreshes too quickly
+        SDL_Delay(16);
+    }
+
+    void DestroyWindow() {
+        SDL_DestroyWindow(window);
+    }
+
 }

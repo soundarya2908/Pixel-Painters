@@ -1,6 +1,5 @@
-/// Run with: 'dub'
+module app;
 
-// Import D standard libraries
 import std.stdio;
 import std.string;
 
@@ -15,7 +14,13 @@ import UserInput: UserInput;
 
 import SDLApp : SDLApp;
 
-// Entry point to program
+/**
+    The following is an entry point to the program. 
+
+	The program will ask the user for the host name and port number while running the server.
+	The program then creates an SDLApp and runs the main application loop.
+    
+*/
 void main()
 {
 	auto userInput = new UserInput();

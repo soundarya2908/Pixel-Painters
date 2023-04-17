@@ -1,13 +1,16 @@
-
-/// Run with: 'dub'
-
+module UserInput;
 // Import D standard libraries
 import std.stdio;
 import std.string;
 import std.conv;
 
+/**
+ * This class is used to validate user input.
+ */
 class UserInput {
-
+    /**
+     * This method is used to validate user input for the port name.
+     */
     string ValidatedHostNameInput() {
         string hostName;
         bool validInput = false;
@@ -35,6 +38,9 @@ class UserInput {
         return hostName;
     }
 
+    /**
+     * This method is used to validate user input for a port number.
+     */
     ushort ValidatedPortInput() {
         bool validInput = false;
         ushort input = 0;
@@ -74,6 +80,9 @@ class UserInput {
         return input;
     }
 
+    /**
+     * This method is used to validate user input for whether a standalone mode is needed or not.
+     */
     bool ValidateUserInput() {
         bool validInput = false;
         int userInput;

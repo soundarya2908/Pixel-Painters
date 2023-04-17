@@ -10,6 +10,9 @@ finalproject.dll
 finalproject.a
 finalproject.lib
 finalproject-test-*
+client
+server
+finalproject
 *.exe
 *.pdb
 *.o

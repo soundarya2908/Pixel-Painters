@@ -24,6 +24,8 @@ void main()
 	bool runStandaloneMode = false;
 	runStandaloneMode = userInput.ValidateUserInput();
 
-	SDLApp myApp = new SDLApp(hostName, port, runStandaloneMode);
+	SDL_Window* window = SDL_CreateWindow("D SDL Painting",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,800,700,SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
+	SDLApp myApp = new SDLApp(hostName, port,window, runStandaloneMode);
 	myApp.MainApplicationLoop();
 }

@@ -13,7 +13,7 @@ import loader = bindbc.loader.sharedlib;
 
 @("testing that a colored pixel is initialised to gray")
 unittest{
-    SDLApp app = new SDLApp("localhost", 50002, true);
+    SDLApp app = new SDLApp("localhost", 50002,null, true);
     app.InitializeSDL();
     Surface surface = new Surface();
 

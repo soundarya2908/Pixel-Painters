@@ -1,3 +1,4 @@
+module Packet;
 // @file Packet.d
 import core.stdc.string;
 
@@ -9,6 +10,21 @@ import core.stdc.string;
 //       operating system is send a 'known' value to the operating system
 //       i.e. some number. If that number is expected (e.g. 12345678), then
 //       the byte order need not be flipped.
+/**
+ * @brief A Packet is a data structure that contains information
+ *        that can be sent across a network, or otherwise saved to disk.
+ *        This is a 'fixed-size' packet, meaning that the size of the
+ *        packet is always the same. This is not always the case, as
+ *        'variable-size' packet are possible, where the
+ *        size of the packet is determined by the information contained
+ *        within the packet.
+ *        For example, if you are sending a packet that contains a
+ *        message, you may want to send the length of the message
+ *        first, and then the message itself. This way the receiver
+ *        knows how much data to expect.
+ *        For this example, a 'fixed-size' Packet is implemented for simplicity
+ *        -- effectively cramming every piece of information that is available.
+ */
 struct Packet{
     // NOTE: Packets usually consist of a 'header'
     //   	 that otherwise tells us some information
@@ -31,10 +47,11 @@ struct Packet{
     int brushSize;
     char[64] message; // for debugging
 
-    /// Purpose of this function is to pack a bunch of
-    /// bytes into an array for 'serialization' or otherwise
-    /// ability to send back and forth across a server, or for
-    /// otherwise saving to disk.
+    /**
+     * @brief Get the Packet As Bytes object
+     * This function packs a bunch of bytes into an array for 'serialization' or otherwise the ability to send back and forth across a server, or for otherwise saving to disk.
+     */  
+    
     char[Packet.sizeof] GetPacketAsBytes(){
         char[Packet.sizeof] buffer = new char[Packet.sizeof];
         // Populate the buffer with the packet data
@@ -49,6 +66,10 @@ struct Packet{
         return buffer;
     }
 
+    /**
+     * @brief Get the Packet From Bytes object
+     * This function unpacks a bunch of bytes into a Packet for 'deserialization' or otherwise the ability to send back and forth across a server, or for otherwise saving to disk.
+     */
     static Packet getPacketFromBytes(char[Packet.sizeof] buffer, size_t bufferSize){
         Packet packet;
         // Check that the buffer is big enough to contain a Packet

@@ -1,4 +1,5 @@
 .dub
+bin/
 docs.json
 __dummy.html
 docs/

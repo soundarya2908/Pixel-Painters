@@ -1,3 +1,4 @@
+module server;
 // @file server.d
 import std.socket;
 import std.stdio;
@@ -5,6 +6,11 @@ import std.stdio;
 import Packet : Packet;
 import UserInput : UserInput;
 
+/**
+ * This class is responsible for handling the server side of the application.
+ * It will listen for incoming connections and handle the messages that are
+ * sent from the client.
+ */
 class Server {
     private:
         Socket listener;
@@ -25,6 +31,11 @@ class Server {
             readSet = new SocketSet();
         }
 
+    /**
+     * This method is responsible for running the server. It will listen for
+     * incoming connections and handle the messages that are sent from the
+     * client.
+     */
     void runServer(){
         writeln("Starting server...");
         writeln("Server must be started before clients may join");
@@ -76,6 +87,10 @@ class Server {
         }
     }
 
+    /**
+     * This method is responsible for adding new clients to the list of
+     * connected clients.
+     */
     void addNewClients() {
         if(readSet.isSet(listener)){
             auto newSocket = listener.accept();
@@ -95,6 +110,10 @@ class Server {
         }
     }
 
+    /**
+     * This method is responsible for broadcasting a message to all clients
+     * except the sender.
+     */
     void broadcastToOtherClients(Socket[] connectedClientsList, Socket sender, char[Packet.sizeof] buffer) {
         foreach(client; connectedClientsList) {
             if (client != sender) {
@@ -104,6 +123,10 @@ class Server {
     }
 }
 
+/**
+ * This is the main method for the server. It will create a new server
+ * object and run the server.
+ */
 void main() {
     auto userInput =new UserInput();
     string hostName = userInput.ValidatedHostNameInput();

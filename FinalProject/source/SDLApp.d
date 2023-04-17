@@ -1,3 +1,4 @@
+module SDLApp;
 // Import D standard libraries
 import std.stdio;
 import std.string;
@@ -14,6 +15,11 @@ import Packet:Packet;
 import std.conv;
 import core.thread;
 
+/**
+ * This is the main application class that will be used to run the SDL
+ * application. This class will be responsible for creating the SDL window
+ * and handling the main application loop.
+ */
 class SDLApp {
     private:
         Surface mySurface;
@@ -26,6 +32,7 @@ class SDLApp {
         static bool isSDLLoaded;
 
     public:
+        
         this(string serverHost, ushort serverPort, bool runStandalone) {
             InitializeSDL();
             mySurface = new Surface();
@@ -55,6 +62,9 @@ class SDLApp {
             writeln("Ending application--good bye!");
         }
 
+    /**
+     * This method will initialize the SDL window.
+     */
     static synchronized void InitializeSDL() {
         if(isSDLLoaded) {
             return;
@@ -97,6 +107,10 @@ class SDLApp {
         isSDLLoaded = true;
     }
 
+    /**
+     * This is the main application loop that will run until a quit event
+     * has occurred. This is the 'main graphics loop'
+     */
     void MainApplicationLoop() {
         // Flag for determing if we are running the main application loop
         bool runApplication = true;

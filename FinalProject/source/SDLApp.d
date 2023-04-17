@@ -31,9 +31,8 @@ class SDLApp {
         bool runInStandAloneMode;
         static bool isSDLLoaded;
 
-    public:
-        
-        this(string serverHost, ushort serverPort, bool runStandalone) {
+
+        this(string serverHost, ushort serverPort,SDL_Window* SDLWindow, bool runStandalone) {
             InitializeSDL();
             mySurface = new Surface();
             runInStandAloneMode = runStandalone;
@@ -44,16 +43,12 @@ class SDLApp {
             } else{
                 writeln("Running the app in Standalone mode");
             }
+            window = SDLWindow;
             undoStack = new Packet[0];
             redoStack = new Packet[0];
-            // Create an SDL window
-            window= SDL_CreateWindow("D SDL Painting",
-            SDL_WINDOWPOS_UNDEFINED,
-            SDL_WINDOWPOS_UNDEFINED,
-            800,
-            700,
-            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-            SDL_UpdateWindowSurface(window);
+            if(window != null) {
+                SDL_UpdateWindowSurface(window);
+            }
             initSurface();
         }
 
@@ -158,9 +153,11 @@ class SDLApp {
                         mySurface.setEraser(); 
                     } else if(e.button.button == SDL_BUTTON_LEFT && e.button.x >= 0 && e.button.x <= 50 && e.button.y > 650 && e.button.y <= 700) {
                         mySurface.ClearSurface();
-                        Packet dataToSend = getPacketData(-1,-1, 3, "reset\0");
-                        // Send the packet of information
-                        serverSocket.send(dataToSend.GetPacketAsBytes());
+                        if(!runInStandAloneMode) {
+                            Packet dataToSend = getPacketData(-1,-1, 3, "reset\0");
+                            // Send the packet of information
+                            serverSocket.send(dataToSend.GetPacketAsBytes());
+                        }
                         undoStack = new Packet[0];
                     } else {
                         drawing=true;
@@ -187,9 +184,11 @@ class SDLApp {
                         mySurface.previousColor();
                     } else if (e.key.keysym.sym == SDLK_SPACE) {
                         mySurface.ClearSurface();
-                        Packet dataToSend = getPacketData(-1,-1, 3, "reset\0");
-                        // Send the packet of information
-                        serverSocket.send(dataToSend.GetPacketAsBytes());
+                        if(!runInStandAloneMode) {
+                            Packet dataToSend = getPacketData(-1,-1, 3, "reset\0");
+                            // Send the packet of information
+                            serverSocket.send(dataToSend.GetPacketAsBytes());
+                        }
                         undoStack = new Packet[0];
                     } else if (e.key.keysym.sym == SDLK_u && SDL_GetModState() & KMOD_CTRL) {
                         undo();
@@ -198,7 +197,9 @@ class SDLApp {
                     }
                 }
             }
-            BlitSurface();
+            if(window != null) {
+                BlitSurface();
+            }
         }
         DestroyWindow();
     }
@@ -210,7 +211,7 @@ class SDLApp {
         for(int w=-brshSize; w < brshSize; w++){
             for(int h=-brshSize; h < brshSize; h++){
                 mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
-                if(sendData) {
+                if(sendData & !runInStandAloneMode) {
                     Packet dataToSend = getPacketData(xPos, yPos, brshSize, "test90");
                     // Send the packet of information
                     serverSocket.send(dataToSend.GetPacketAsBytes());

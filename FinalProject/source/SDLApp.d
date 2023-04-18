@@ -26,7 +26,7 @@ class SDLApp {
         static bool isSDLLoaded;
 
     public:
-        this(string serverHost, ushort serverPort,SDL_Window* SDLWindow, bool runStandalone) {
+        this(string serverHost, ushort serverPort, bool test, bool runStandalone) {
             InitializeSDL();
             mySurface = new Surface();
             runInStandAloneMode = runStandalone;
@@ -37,12 +37,14 @@ class SDLApp {
             } else{
                 writeln("Running the app in Standalone mode");
             }
-            window = SDLWindow;
-            undoStack = new Packet[0];
-            redoStack = new Packet[0];
-            if(window != null) {
+            if(test) {
+                window = null;
+            } else {
+                window = SDL_CreateWindow("D SDL Painting",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,800,700,SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
                 SDL_UpdateWindowSurface(window);
             }
+            undoStack = new Packet[0];
+            redoStack = new Packet[0];
             initSurface();
         }
 
@@ -158,7 +160,7 @@ class SDLApp {
                     int brshSize=mySurface.getBrushSize();
 
                     if(xPos > 55) {
-                        draw(xPos, yPos, brshSize, true, false);
+                        Draw(xPos, yPos, brshSize, true, false);
                     }
                 } else if(e.type == SDL_KEYDOWN) {
                     if (e.key.keysym.sym == SDLK_UP) {
@@ -191,7 +193,7 @@ class SDLApp {
         DestroyWindow();
     }
 
-    void draw(int xPos, int yPos,int brshSize, bool sendData, bool undoing) {
+    void Draw(int xPos, int yPos,int brshSize, bool sendData, bool undoing) {
         // Loop through and update specific pixels
         // NOTE: No bounds checking performed --
         //       think about how you might fix this :)
@@ -250,7 +252,7 @@ class SDLApp {
                         int brshSize = formattedPacket.brushSize;
                         mySurface.setColor(new Color(formattedPacket.r, formattedPacket.g, formattedPacket.b));
 
-                        draw(formattedPacket.x, formattedPacket.y, brshSize, false, false);
+                        Draw(formattedPacket.x, formattedPacket.y, brshSize, false, false);
                     }
                 }
             }
@@ -271,7 +273,7 @@ class SDLApp {
                     undoStack = undoStack[0..undoStack.length-1];
 
                     mySurface.setEraser();
-                    draw(packetToUndo.x, packetToUndo.y, packetToUndo.brushSize, true, true);
+                    Draw(packetToUndo.x, packetToUndo.y, packetToUndo.brushSize, true, true);
                     mySurface.setColor(new Color(packetToUndo.r, packetToUndo.g, packetToUndo.b));
                     redoStack ~= packetToUndo;
                 }
@@ -290,7 +292,7 @@ class SDLApp {
                     redoStack = redoStack[0..redoStack.length-1];
 
                     mySurface.setColor(new Color(packetToRedo.r, packetToRedo.g, packetToRedo.b));
-                    draw(packetToRedo.x, packetToRedo.y, packetToRedo.brushSize, true, true);
+                    Draw(packetToRedo.x, packetToRedo.y, packetToRedo.brushSize, true, true);
                     undoStack ~= packetToRedo;
                 }
             }

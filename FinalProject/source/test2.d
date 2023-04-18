@@ -12,7 +12,7 @@ import loader = bindbc.loader.sharedlib;
 
 @("testing that a colored pixel is the correct color")
 unittest{
-    SDLApp app = new SDLApp("localhost", 50002, null, true);
+    SDLApp app = new SDLApp("localhost", 50002, true, true);
     app.InitializeSDL();
     Surface surface = new Surface();
 

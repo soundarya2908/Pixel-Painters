@@ -11,11 +11,9 @@
 				"unit-threaded": "~>2.1.2"
 			},
 			"excludedSourceFiles": [
-				"source/client.d",
-				"source/client/*",
 				"source/app.d"
 			],
-			"mainSourceFile": "source/server.d",
+			"mainSourceFile": "source/AppServer.d",
 			"name": "Server",
 			"targetName": "server",
 			"targetType": "executable"
@@ -26,8 +24,8 @@
 				"unit-threaded": "~>2.1.2"
 			},
 			"excludedSourceFiles": [
-				"source/server.d",
-				"source/server/*"
+				"source/Server.d",
+				"source/Server/*"
 			],
 			"mainSourceFile": "source/app.d",
 			"name": "PaintApp",
@@ -40,8 +38,7 @@
 				"unit-threaded": "~>2.1.2"
 			},
 			"excludedSourceFiles": [
-				"source/server.d",
-				"source/client.d"
+				"source/Server.d"
 			],
 			"mainSourceFile": "bin/ut.d",
 			"name": "unittest",

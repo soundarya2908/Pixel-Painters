@@ -1,9 +1,9 @@
+module server;
 // @file server.d
 import std.socket;
 import std.stdio;
 
 import Packet : Packet;
-import UserInput : UserInput;
 
 class Server {
     private:
@@ -25,7 +25,7 @@ class Server {
             readSet = new SocketSet();
         }
 
-    void runServer(){
+    void RunServer(){
         writeln("Starting server...");
         writeln("Server must be started before clients may join");
 
@@ -104,10 +104,3 @@ class Server {
     }
 }
 
-void main() {
-    auto userInput =new UserInput();
-    string hostName = userInput.ValidatedHostNameInput();
-    ushort port = userInput.ValidatedPortInput();
-    auto server = new Server(hostName, port);
-    server.runServer();
-}

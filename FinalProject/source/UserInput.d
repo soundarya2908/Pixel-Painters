@@ -6,32 +6,21 @@ import std.stdio;
 import std.string;
 import std.conv;
 
+import std.regex : regex, match, matchAll;
+
 class UserInput {
 
     string ValidatedHostNameInput() {
         string hostName;
         bool validInput = false;
 
-        while (!validInput)
-        {
-            writeln("Enter a Host Name/IP: ");
-            hostName = readln().strip;
-
-            validInput = true;
-
-            // check if the input contains only letters or not
-            foreach (char c; hostName)
-            {
-                if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')))
-                {
-                    writeln("Invalid input. Only strings are allowed.");
-                    validInput = false;
-                    break;
-                }
-            }
+        writeln("Enter a Host Name/IP: ");
+        hostName = readln().strip;
+        if(hostName == "") {
+            hostName = "localhost";
+            writeln("No host entered, hence taking localhost as default hostName");
         }
 
-        writeln("Input accepted: ", hostName);
         return hostName;
     }
 
@@ -45,6 +34,11 @@ class UserInput {
             // Read in input as a string
             writeln("Enter a Port: ");
             string line = readln().chomp();
+            if(line == "") {
+                input = 50002;
+                writeln("No port entered, hence taking default port(50002)");
+                break;
+            }
             // Validate that the input is only made up of digits
             bool allDigits = true;
             foreach (i, char c; line)
@@ -71,6 +65,7 @@ class UserInput {
                 writeln("Invalid input. Please enter a positive whole number.");
             }
         }
+
         return input;
     }
 

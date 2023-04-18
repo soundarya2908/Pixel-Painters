@@ -210,6 +210,9 @@ class SDLApp {
         // Loop through and update specific pixels
         // NOTE: No bounds checking performed --
         //       think about how you might fix this :)
+        if(xPos < 55) {
+            return;
+        }
         for(int w=-brshSize; w < brshSize; w++){
             for(int h=-brshSize; h < brshSize; h++){
                 mySurface.UpdateSurfacePixel(xPos+w,yPos+h);
@@ -379,6 +382,10 @@ class SDLApp {
 
     void DestroyWindow() {
         SDL_DestroyWindow(window);
+    }
+
+    Surface GetSurface(){
+        return mySurface;
     }
 
 }

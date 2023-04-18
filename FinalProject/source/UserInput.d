@@ -1,4 +1,3 @@
-module UserInput;
 // Import D standard libraries
 import std.stdio;
 import std.string;

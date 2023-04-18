@@ -8,6 +8,7 @@
 	"configurations": [
 		{
 			"dependencies": {
+				"bindbc-sdl": "~>1.2.4",
 				"unit-threaded": "~>2.1.2"
 			},
 			"excludedSourceFiles": [
@@ -46,7 +47,10 @@
 				"dub run unit-threaded -c gen_ut_main -- -f bin/ut.d -d dub"
 			],
 			"targetType": "executable"
-		}
+		},
+		{
+            "name": "docs"
+        }
 	],
 	"dependencies": {
 		"bindbc-sdl": "~>1.2.4"

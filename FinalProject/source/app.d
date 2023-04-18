@@ -23,11 +23,16 @@ import SDLApp : SDLApp;
 */
 void main()
 {
+
 	auto userInput = new UserInput();
-	string hostName = userInput.ValidatedHostNameInput();
-	ushort port = userInput.ValidatedPortInput();
 	bool runStandaloneMode = false;
 	runStandaloneMode = userInput.ValidateUserInput();
+	string hostName="localhost";
+	ushort port = 50002;
+	if(!runStandaloneMode) {
+		hostName = userInput.ValidatedHostNameInput();
+		port = userInput.ValidatedPortInput();
+	}
 
 	SDLApp myApp = new SDLApp(hostName, port, false, runStandaloneMode);
 	myApp.MainApplicationLoop();

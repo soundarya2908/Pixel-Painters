@@ -80,24 +80,14 @@ class UserInput {
      * This method is used to validate user input for whether a standalone mode is needed or not.
      */
     bool ValidateUserInput() {
-        bool validInput = false;
-        int userInput;
-        while (!validInput)
-        {
-            writeln("Enter 1 to run the Paint application in standalone mode: ");
-            readf("%d", &userInput);
-            if (userInput == 0 || userInput == 1)
-            {
-                validInput = true;
-            }
-            else
-            {
-                writeln("Invalid input. Please enter 0 or 1.");
-            }
+        string userInput;
+        writeln("By Default the app runs on network. Enter 1 to run in standalone mode");
+        userInput = readln();
+
+        if(userInput == "1") {
+            return true;
         }
 
-        bool booleanInput = userInput == 1;
-        writeln("You entered: ", booleanInput);
-        return booleanInput;
+        return false;
     }
 }

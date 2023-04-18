@@ -82,7 +82,7 @@ class UserInput {
     bool ValidateUserInput() {
         string userInput;
         writeln("By Default the app runs on network. Enter 1 to run in standalone mode");
-        userInput = readln();
+        userInput = readln().strip;
 
         if(userInput == "1") {
             return true;
